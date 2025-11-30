@@ -1,0 +1,56 @@
+name: Research seating-arrangement
+
+on:
+  schedule:
+    - cron: '0 9 * * *'  # Daily at 9am UTC
+  workflow_dispatch:
+
+env:
+  TARGET_REPO: neonwatty/seating-arrangement
+  REPO_NAME: seating-arrangement
+
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install reddit-market-research
+        run: pip install reddit-market-research
+
+      - name: Create praw.ini
+        run: |
+          cat > praw.ini << 'EOF'
+          [market_research]
+          client_id=${{ secrets.REDDIT_CLIENT_ID }}
+          client_secret=${{ secrets.REDDIT_CLIENT_SECRET }}
+          username=${{ secrets.REDDIT_USERNAME }}
+          password=${{ secrets.REDDIT_PASSWORD }}
+          user_agent=market_research_bot
+          EOF
+
+      - name: Run Claude Market Research
+        uses: anthropics/claude-code-action@v1
+        with:
+          prompt: |
+            1. Fetch and read the README from ${{ env.TARGET_REPO }} to understand the project
+            2. Generate relevant keywords and subreddits for market research
+            3. Run: reddit-market-research search -s "<subreddits>" -k "<keywords>" --json
+            4. Create a markdown file at findings/${{ env.REPO_NAME }}/$(date +%Y-%m-%d).md with:
+               - Summary of what the project does
+               - Top pain points found on Reddit
+               - Potential user segments
+               - Relevant Reddit posts with links
+               - Suggested outreach opportunities
+            5. Git commit and push the new file
+          allowed_tools: "Bash(reddit-market-research:*),Bash(git:*),Bash(curl:*),Read,Write"
+        env:
+          CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
