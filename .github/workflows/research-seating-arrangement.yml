@@ -60,4 +60,4 @@ jobs:
                (sort by relevance to project, NOT by score)
 
             5. Git add, commit, and push
-          claude_args: "--allowedTools 'Bash(reddit-market-research:*),Bash(git:*),Bash(curl:*),Read,Write'"
+          claude_args: "--allowedTools 'Bash(reddit-market-research:*),Bash(git:*),Bash(curl:*),Read,Write,WebFetch'"
