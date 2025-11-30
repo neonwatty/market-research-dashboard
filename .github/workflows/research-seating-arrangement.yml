@@ -45,11 +45,9 @@ jobs:
             1. Fetch and read the README from ${{ env.TARGET_REPO }} to understand the project
             2. Generate relevant keywords and subreddits for market research
             3. Run: reddit-market-research search -s "<subreddits>" -k "<keywords>" --json
-            4. Create a markdown file at findings/${{ env.REPO_NAME }}/$(date +%Y-%m-%d).md with:
-               - Summary of what the project does
-               - Top pain points found on Reddit
-               - Potential user segments
-               - Relevant Reddit posts with links
-               - Suggested outreach opportunities
+            4. Create a concise markdown file at findings/${{ env.REPO_NAME }}/$(date +%Y-%m-%d).md with:
+               - One-line project summary
+               - Table of Reddit posts found (title, subreddit, score, comments, link)
+               - Keep it factual - no speculation or recommendations
             5. Git commit and push the new file
           claude_args: "--allowedTools 'Bash(reddit-market-research:*),Bash(git:*),Bash(curl:*),Read,Write'"
