@@ -14,6 +14,7 @@ Automated Reddit market research for my GitHub projects using [reddit-market-res
 | Project | Latest |
 |---------|--------|
 | [seating-arrangement](findings/seating-arrangement/) | AI-powered seating optimization for events |
+| [bleep-that-shit](findings/bleep-that-shit/) | Browser-based audio/video word censoring tool |
 
 ## Setup
 
