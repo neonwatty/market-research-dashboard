@@ -48,8 +48,8 @@ jobs:
             4. Run: reddit-market-research search -s "<subreddits>" -k "<keywords>" --json
             5. Create a markdown file at findings/${{ env.REPO_NAME }}/$(date +%Y-%m-%d).md with:
                - One-line project summary
-               - Table of Reddit posts: title, subreddit, score, comments, link, and a brief summary of why it's relevant
+               - Key Takeaways section FIRST (3-5 bullet points based on the posts found)
+               - Table of Reddit posts ranked by RELEVANCE to the project (not by upvotes): title, subreddit, score, comments, link, and a brief summary
                - Exclude any posts that appeared in the last 3 days of findings
-               - Key Takeaways section (3-5 bullet points based on the posts found)
             6. Git commit and push the new file
           claude_args: "--allowedTools 'Bash(reddit-market-research:*),Bash(git:*),Bash(curl:*),Read,Write'"
