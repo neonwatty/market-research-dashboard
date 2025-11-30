@@ -45,6 +45,8 @@ jobs:
             1. Fetch the README from ${{ env.TARGET_REPO }} to understand what the project does
             2. Read any existing files in findings/${{ env.REPO_NAME }}/ to avoid duplicating posts from last 3 days
             3. Run: reddit-market-research search -s "<subreddits>" -k "<keywords>" --json
+               IMPORTANT: Include education-related subreddits (teachers, education, edtech, etc.) and keywords.
+               Prioritize posts from educators looking for easy ways to censor video/audio content for classroom use.
             4. Write to findings/${{ env.REPO_NAME }}/$(date +%Y-%m-%d).md (OVERWRITE if exists) in this FORMAT:
 
                # Project Name - Market Research
