@@ -43,11 +43,13 @@ jobs:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           prompt: |
             1. Fetch and read the README from ${{ env.TARGET_REPO }} to understand the project
-            2. Generate relevant keywords and subreddits for market research
-            3. Run: reddit-market-research search -s "<subreddits>" -k "<keywords>" --json
-            4. Create a concise markdown file at findings/${{ env.REPO_NAME }}/$(date +%Y-%m-%d).md with:
+            2. Check findings/${{ env.REPO_NAME }}/ for the last 3 days of scans to avoid duplicating posts
+            3. Generate relevant keywords and subreddits for market research
+            4. Run: reddit-market-research search -s "<subreddits>" -k "<keywords>" --json
+            5. Create a markdown file at findings/${{ env.REPO_NAME }}/$(date +%Y-%m-%d).md with:
                - One-line project summary
-               - Table of Reddit posts found (title, subreddit, score, comments, link)
-               - Keep it factual - no speculation or recommendations
-            5. Git commit and push the new file
+               - Table of Reddit posts: title, subreddit, score, comments, link, and a brief summary of why it's relevant
+               - Exclude any posts that appeared in the last 3 days of findings
+               - Key Takeaways section (3-5 bullet points based on the posts found)
+            6. Git commit and push the new file
           claude_args: "--allowedTools 'Bash(reddit-market-research:*),Bash(git:*),Bash(curl:*),Read,Write'"
