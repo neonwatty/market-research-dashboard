@@ -1,0 +1,66 @@
+name: Research demo-recorder
+
+on:
+  schedule:
+    - cron: '15 9 * * *'  # Daily at 9:15am UTC
+  workflow_dispatch:
+
+env:
+  TARGET_REPO: neonwatty/demo-recorder
+  REPO_NAME: demo-recorder
+
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install reddit-market-research
+        run: pip install reddit-market-research
+
+      - name: Create praw.ini
+        run: |
+          cat > praw.ini << 'EOF'
+          [market_research]
+          client_id=${{ secrets.REDDIT_CLIENT_ID }}
+          client_secret=${{ secrets.REDDIT_CLIENT_SECRET }}
+          username=${{ secrets.REDDIT_USERNAME }}
+          password=${{ secrets.REDDIT_PASSWORD }}
+          user_agent=market_research_bot
+          EOF
+
+      - name: Run Claude Market Research
+        uses: anthropics/claude-code-action@v1
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          prompt: |
+            1. Fetch the README from ${{ env.TARGET_REPO }} to understand what the project does
+            2. Read any existing files in findings/${{ env.REPO_NAME }}/ to avoid duplicating posts from last 3 days
+            3. Run: reddit-market-research search -s "<subreddits>" -k "<keywords>" --json
+               IMPORTANT: Focus on developers creating product demos, documentation, marketing materials.
+               Include subreddits like webdev, SaaS, indiehackers, startups, opensource, devops, and similar.
+               Look for posts about recording demos, creating GIFs, product screenshots, documentation automation.
+            4. Write to findings/${{ env.REPO_NAME }}/$(date +%Y-%m-%d).md (OVERWRITE if exists) in this FORMAT:
+
+               # Project Name - Market Research
+               <one-line description>
+
+               ## Key Takeaways
+               - bullet 1
+               - bullet 2
+               (3-5 bullets summarizing insights from posts)
+
+               ## Relevant Posts
+               | Title | Subreddit | Why Relevant | Score | Comments | Link |
+               (sort by relevance to project, NOT by score)
+
+            5. Git add, commit, and push
+          claude_args: "--allowedTools 'Bash(reddit-market-research:*),Bash(git:*),Bash(curl:*),Read,Write,WebFetch'"
