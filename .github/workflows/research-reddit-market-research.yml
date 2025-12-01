@@ -2,7 +2,7 @@ name: Research reddit-market-research
 
 on:
   schedule:
-    - cron: '0 11 * * *'  # Daily at 11am UTC
+    - cron: '10 9 * * *'  # Daily at 9:10am UTC
   workflow_dispatch:
 
 env:
