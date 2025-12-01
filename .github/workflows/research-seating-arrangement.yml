@@ -50,6 +50,10 @@ jobs:
                # Project Name - Market Research
                <one-line description>
 
+               ## Search Parameters
+               - **Subreddits:** <list subreddits searched>
+               - **Keywords:** <list keywords used>
+
                ## Key Takeaways
                - bullet 1
                - bullet 2
