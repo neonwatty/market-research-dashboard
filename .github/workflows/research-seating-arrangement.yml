@@ -1,8 +1,8 @@
 name: Research seating-arrangement
 
 on:
-  schedule:
-    - cron: '0 9 * * *'  # Daily at 9am UTC
+  # schedule:
+  #   - cron: '0 9 * * *'  # Daily at 9am UTC
   workflow_dispatch:
 
 env:
